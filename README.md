@@ -1,5 +1,9 @@
 #eventbrite-client.py#
 
+## This project has been deprecated
+
+This project has been deprecate in favor of our newer version. Please begin using the [eventbrite-sdk-python](https://github.com/eventbrite/eventbrite-sdk-python) instead.
+
 ##Description##
 A simple python-based http client for the Eventbrite API
 
