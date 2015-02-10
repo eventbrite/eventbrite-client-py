@@ -11,7 +11,7 @@ setup(
     author = 'Ryan Jarvinen',
     author_email = 'ryan.jarvinen@gmail.com',
     description = "pyhton client for Eventbrite's HTTP-based API",
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     url = 'http://github.com/eventbrite/eventbrite-client-py',
     packages = ['eventbrite'],
     license='Apache',
