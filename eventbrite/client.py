@@ -2,9 +2,15 @@
 """
 import datetime
 import time
-import httplib
+try:
+    import http.client as httplib
+except ImportError:
+    import httplib
 import logging
-import urllib
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 import sys
 from eventbrite import json_lib
 
@@ -105,7 +111,7 @@ class EventbriteClient(object):
             method_arguments.update(self._auth_tokens)
 
         # urlencode API method parameters
-        encoded_params = urllib.urlencode(method_arguments)
+        encoded_params = urlencode(method_arguments)
         
         # construct our request url
         request_url = self.eventbrite_request_template % dict(host=self.eventbrite_api_endpoint, method=method, arguments=encoded_params)
@@ -128,7 +134,7 @@ class EventbriteClient(object):
         #self.logger.debug("RES - %s", response_data)
 
         # decode our response
-        response = json_lib.loads(response_data)
+        response = json_lib.loads(response_data.decode('utf-8'))
         if 'error' in response and 'error_message' in response['error'] :
             raise EnvironmentError( response['error']['error_message'] )
         return response
@@ -146,12 +152,12 @@ class EventbriteClient(object):
                   'code'         : tokens['access_code'] }
 
         request_url = 'https://%(host)s/oauth/token' % dict(host=self.eventbrite_api_endpoint)
-        post_body = urllib.urlencode(params)
+        post_body = urlencode(params)
         headers = {'Content-type': "application/x-www-form-urlencoded"}
         
         self._https_connection.request('POST', request_url, post_body, headers)
         response_data = self._https_connection.getresponse().read()
-        response = json_lib.loads(response_data)
+        response = json_lib.loads(response_data.decode('utf-8'))
 
         if 'error' in response or 'access_token' not in response :
             raise EnvironmentError( response['error_description'] )
